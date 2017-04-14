@@ -1,0 +1,63 @@
+********************************************************\
+		Analisador Léxico			|
+*********************************************************
+
+	MEMBROS:
+		
+		EDUARDO JOSÉ
+		EDUARDO TONEL
+		MARCOS FRANCISQUINE
+		HENRIQUE DIAS
+
+____________________________________________________________________________________________________________
+
+	OPÇÕES DA FERRAMENTA USADAS NO TRABALHO:
+
+		yylex()	=>	Função que invoca o analisador léxico, também retorna 0 no fim de streaming de alguma entrada
+		yylineno=>	Ponteiro para o número da linha do input
+		yyval   =>	Retorna a variável que gera a expressão, ou o token para o analisador sintático
+		yywrap()=>	Essa função retorna 1 quando encontra o fim do arquivo de entrada	
+		yyin    =>	Ponteiro que para o arquivo que esta sendo lido
+	
+	FUNCIONAMENTO:
+
+		O lex é dividido em três partes separadas por "%%" sendo a primeira parte iniciada por
+		"%{" e terminada por "%}". A primeira parte pode ser usada para definir variaveis, 
+		inclusão de bibliotecas ou qualquer código válido na linguagem C. A segunda parte traz
+		as expressões regulares quais o analisador léxico atraves da função que está explicita
+		"yyparse()"; constrói a arvore que gera os lexemas e/ou tokens. Ná terceira parte do 
+		código, criamos a referência para a função yywrap() e então utilizamos a função
+		principal main(), onde está sendo usada os argumentos para ler o arquivo de texto
+		que está sendo passado como parâmetro através do terminal. Dentro da função main 
+		chamamos a função yylex() para invocar o analisador léxico que fará as devidas ligações.
+
+	EXPRESSÕES REGULARES USADAS:
+
+		num [0-9]				=> Reconhece qualquer número
+		let [A-Za-z]				=> Reconhece letras maiúsculas ou minúsculas de 'a' a 'z'
+		soma [+]				=> Reconhece sinal de soma
+		atri [=]				=> Reconhece sinal de atribuição
+		menu [-]				=> Reconhece sinal de subtração
+		mult [*]				=> Reconhece sinal de multiplicação
+		div  [/]				=> Reconhece sinal de divisão
+		int  "int"|"INT"|"Int"|"iNt"|"inT"	=> Reconhece tipo int que é case sensitive
+		str  "str"|"STR"|"Str"|"sTr"|"stR"	=> Reconhece tipo str que também é case sensitive
+		novalinha [\n]				=> Reconhece nova linha no input
+		outros [ \t]				=> Reconhece espaço e tabulações para ignorá-los
+		$ + "representaçao_algarismo_romano"	=> Reconhece algarismos romanos até o numero dez
+	EXECUÇÃO:
+		
+		Foi criado um arquivo "USEME" com o uso da linguagem reconhecida. O analisador léxico
+		reconhece cada caractere do arquivo e exibe o que encontrou separado por classes para
+		melhor visualização. 
+	
+	MODO DE USO:
+		
+		bash calc USEME ou ./calc USEME
+
+	NOTAS DE USO:
+
+		Após criar o código e salvar com a extensão ".l", usando o comando "lex -ll + nome_do_arquivo"
+		a flag "-ll" serve para dizer ao lex, que é preciso linkar a função principal ao analisador,
+		o programa gera um arquivo "lex.yy.c", que precisa ser compilado para gerar o analisador lexico
+		isso pode ser feito com o comando "cc lex.yy.c -o nome_do_executavel_desejado".
